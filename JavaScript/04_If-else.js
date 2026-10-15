@@ -1,6 +1,6 @@
 // if a person age is greater than 18 then he is eligible for voting otherwise not
 // if the ticked qty is more than 3 then the person is eligible for discount otherwise not if eliible then 50 rupees off on the total bill
-// 1 ticket = 100 rupees
+// 1 ticket = 100 rupees.
 
 
 
@@ -24,4 +24,9 @@ if(ticketQty >= 3){
     console.log("You are not eligible for discount");
     console.log("Your total bill is: " + totalBill);
 }
+
+
+
+
+
 
