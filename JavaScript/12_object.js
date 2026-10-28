@@ -20,3 +20,5 @@ userInfo.greet = function () {
 userInfo.greet(); // Hello, my name is Harsh and I am 20 years old.
 
 console.log(userInfo); // { Name: 'Harsh', age: 20, city: 'New York', greet: [Function (anonymous)] }
+
+
