@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>District | Movies near you</title>
+    <style>
+        :root {
+            --ink: #16131d;
+            --muted: #655e6d;
+            --purple: #6546e8;
+            --lavender: #eeeaff;
+            --line: #e7e4eb;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            color: var(--ink);
+            font-family: "Trebuchet MS", Arial, sans-serif;
+            background: linear-gradient(180deg, #f0edff 0%, #fff 72%);
+            min-height: 100vh;
+        }
+
+        button { font: inherit; }
+
+        .top-border { height: 10px; background: #303744; }
+
+        .site-header {
+            align-items: center;
+            background: #fff;
+            display: flex;
+            gap: 30px;
+            min-height: 93px;
+            padding: 16px 30px 16px 20px;
+        }
+
+        .brand {
+            border-right: 1px solid var(--line);
+            color: #151923;
+            font-family: Georgia, serif;
+            font-size: 36px;
+            font-weight: 900;
+            letter-spacing: -4px;
+            line-height: .7;
+            padding-right: 24px;
+            text-transform: lowercase;
+        }
+
+        .brand small {
+            display: block;
+            font-family: Arial, sans-serif;
+            font-size: 10px;
+            letter-spacing: 2px;
+            margin: 8px 0 0 24px;
+            text-transform: uppercase;
+        }
+
+        .location { align-items: center; display: flex; gap: 12px; min-width: 210px; }
+        .location-pin { color: var(--purple); font-size: 29px; }
+        .location strong, .location span { display: block; }
+        .location strong { font-size: 19px; }
+        .location span { color: #5e5866; font-size: 15px; margin-top: 5px; }
+
+        .nav { align-items: center; display: flex; flex: 1; gap: 8px; justify-content: center; }
+        .nav a { border-radius: 28px; color: #403b45; font-size: 18px; font-weight: 700; padding: 14px 21px; text-decoration: none; }
+        .nav a.active { background: #e9e2ff; color: #321b86; }
+        .header-actions { align-items: center; display: flex; gap: 24px; }
+        .search { color: var(--purple); font-size: 31px; }
+        .profile { align-items: center; background: #d7d9df; border-radius: 50%; color: #fff; display: flex; font-size: 22px; height: 54px; justify-content: center; width: 54px; }
+
+        main { margin: 0 auto; max-width: 1600px; padding: 44px 7.8% 72px; }
+        h1 { font-size: 31px; letter-spacing: -.5px; margin-bottom: 34px; }
+        .movie-rail { display: flex; gap: 20px; overflow-x: auto; padding: 0 0 18px; scrollbar-color: #a9a0d8 transparent; scrollbar-width: thin; }
+        .movie-card { background: #fff; border: 1px solid var(--line); border-radius: 18px; flex: 0 0 247px; overflow: hidden; transition: box-shadow .2s, transform .2s; }
+        .movie-card:hover { box-shadow: 0 12px 25px rgba(48, 37, 79, .14); transform: translateY(-4px); }
+        .poster { aspect-ratio: 247 / 327; background: #ddd; display: block; object-fit: cover; width: 100%; }
+        .movie-info { padding: 15px 15px 17px; }
+        .movie-info h2 { font-size: 20px; margin-bottom: 5px; white-space: nowrap; }
+        .movie-info p { color: #43384b; font-size: 15px; }
+        .book-button { background: var(--purple); border: 0; border-radius: 8px; color: #fff; cursor: pointer; font-weight: 700; margin-top: 13px; padding: 10px 14px; width: 100%; }
+        .book-button:hover { background: #4e31c6; }
+
+        .modal-backdrop { align-items: center; background: rgba(20, 17, 28, .48); display: none; inset: 0; justify-content: center; padding: 20px; position: fixed; z-index: 5; }
+        .modal-backdrop.open { display: flex; }
+        .modal { background: #fff; border-radius: 18px; box-shadow: 0 24px 70px rgba(22, 16, 39, .3); max-width: 390px; padding: 34px; position: relative; text-align: center; width: 100%; }
+        .close { background: transparent; border: 0; color: #777; cursor: pointer; font-size: 25px; position: absolute; right: 18px; top: 12px; }
+        .success-icon { align-items: center; background: #dcf8e7; border-radius: 50%; color: #20a35a; display: flex; font-size: 31px; height: 68px; justify-content: center; margin: 0 auto 17px; width: 68px; }
+        .modal h2 { color: #188447; font-size: 25px; margin-bottom: 9px; }
+        .modal p { color: var(--muted); line-height: 1.5; }
+        .modal .done { background: #20a35a; border: 0; border-radius: 8px; color: #fff; cursor: pointer; font-weight: 700; margin-top: 23px; padding: 12px 28px; }
+
+        @media (max-width: 1050px) {
+            .site-header { flex-wrap: wrap; gap: 18px; }
+            .nav { order: 3; overflow-x: auto; justify-content: flex-start; width: 100%; }
+            .nav a { font-size: 15px; padding: 10px 14px; white-space: nowrap; }
+        }
+        @media (max-width: 600px) {
+            .site-header { padding: 15px; }
+            .brand { font-size: 29px; padding-right: 15px; }
+            .location { min-width: 0; }
+            .location strong { font-size: 15px; }
+            .location span { font-size: 12px; }
+            .header-actions { margin-left: auto; }
+            .search { font-size: 25px; }
+            .profile { height: 42px; width: 42px; }
+            main { padding: 34px 18px 50px; }
+            h1 { font-size: 25px; }
+            .movie-card { flex-basis: 220px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-border"></div>
+    <header class="site-header">
+        <div class="brand">district<small>by zomato</small></div>
+        <div class="location"><span class="location-pin">⌖</span><div><strong>Gurugram</strong><span>Haryana</span></div></div>
+        <nav class="nav" aria-label="Main navigation">
+            <a class="active" href="#movies">For you</a><a href="#">Dining</a><a href="#">Movies</a><a href="#">Events</a><a href="#">Comedy</a><a href="#">Stores</a><a href="#">Activities</a><a href="#">Play</a>
+        </nav>
+        <div class="header-actions"><span class="search" aria-label="Search">⌕</span><span class="profile" aria-label="Profile">♙</span></div>
+    </header>
+
+    <main id="movies">
+        <h1>Top Hindi movies near you</h1>
+        <section class="movie-rail" aria-label="Movies">
+            <article class="movie-card"><img class="poster" src="https://cdn.district.in/movies-assets/images/cinema/Hanuman-Ansh-3199a900-6975-11f1-a51b-91d242246b61.jpg" alt="Hanuman Ansh poster"><div class="movie-info"><h2>Hanuman Ansh</h2><p>U&nbsp; | &nbsp;Hindi</p><button class="book-button" data-movie="Hanuman Ansh">Book tickets</button></div></article>
+            <article class="movie-card"><img class="poster" src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=700&q=85" alt="Mirzapur The Movie poster"><div class="movie-info"><h2>Mirzapur: The Movie</h2><p>A&nbsp; | &nbsp;Hindi</p><button class="book-button" data-movie="Mirzapur: The Movie">Book tickets</button></div></article>
+            <article class="movie-card"><img class="poster" src="https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=700&q=85" alt="Haiwaan poster"><div class="movie-info"><h2>Haiwaan</h2><p>UA16+&nbsp; | &nbsp;Hindi</p><button class="book-button" data-movie="Haiwaan">Book tickets</button></div></article>
+            <article class="movie-card"><img class="poster" src="https://images.unsplash.com/photo-1518929458119-e5bf444c30f4?auto=format&fit=crop&w=700&q=85" alt="Dulhaniya Le Aaegi poster"><div class="movie-info"><h2>Dulhaniya Le Aaegi</h2><p>UA13+&nbsp; | &nbsp;Hindi</p><button class="book-button" data-movie="Dulhaniya Le Aaegi">Book tickets</button></div></article>
+            <article class="movie-card"><img class="poster" src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=700&q=80" alt="Cinema hall poster"><div class="movie-info"><h2>Special Screening</h2><p>U&nbsp; | &nbsp;Hindi</p><button class="book-button" data-movie="Special Screening">Book tickets</button></div></article>
+        </section>
+    </main>
+
+    <div class="modal-backdrop" id="booking-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal"><button class="close" aria-label="Close">&times;</button><div class="success-icon">✓</div><h2 id="modal-title">Booking confirmed!</h2><p>Your tickets for <strong id="selected-movie">the movie</strong> have been reserved successfully.</p><button class="done">Done</button></div>
+    </div>
+    <script>
+        const modal = document.getElementById('booking-modal');
+        const selectedMovie = document.getElementById('selected-movie');
+        const closeModal = () => modal.classList.remove('open');
+        document.querySelectorAll('.book-button').forEach((button) => {
+            button.addEventListener('click', () => {
+                selectedMovie.textContent = button.dataset.movie;
+                modal.classList.add('open');
+            });
+        });
+        document.querySelector('.close').addEventListener('click', closeModal);
+        document.querySelector('.done').addEventListener('click', closeModal);
+        modal.addEventListener('click', (event) => { if (event.target === modal) closeModal(); });
+        document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeModal(); });
+    </script>
+</body>
+</html>
