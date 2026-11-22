@@ -1,0 +1,10 @@
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; padding: 32px 16px; font: 16px Arial, sans-serif; transition: background .2s, color .2s; }
+body.light-theme { background: #f3f5f8; color: #20242a; }
+body.dark-theme { background: #171a21; color: #f4f5f7; }
+body.blue-theme { background: #dceeff; color: #10345c; }
+.card { max-width: 560px; margin: 40px auto; padding: 28px; border-radius: 12px; background: #ffffffcc; color: #20242a; box-shadow: 0 4px 18px #00000018; }
+.theme-buttons { display: flex; flex-wrap: wrap; gap: 10px; }
+button { padding: 10px 16px; border: 0; border-radius: 6px; background: #2457d6; color: white; cursor: pointer; }
+body.dark-theme .card { background: #282e39; color: #f4f5f7; }
+body.blue-theme .card { background: #f4f9ff; color: #10345c; }
